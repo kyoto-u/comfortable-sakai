@@ -14,16 +14,15 @@ async function toggleMiniSakai(): Promise<void> {
     miniPandA.style.width = "0px";
     document.getElementById("cover")?.remove();
   } else {
-
     miniPandA.style.width = "300px";
+
     const cover = document.createElement("div");
     cover.id = "cover";
     document.getElementsByTagName("body")[0].appendChild(cover);
     cover.onclick = toggleMiniSakai;
-    await reloadMiniSakai()
+    // await reloadMiniSakai();
   }
   toggle = !toggle;
-
 }
 
 function toggleAssignmentTab(): void {
@@ -137,15 +136,19 @@ async function updateSettings(event: any, type: string): Promise<void> {
 
   const settings = new Settings();
   const oldSettings = await loadFromLocalStorage("TSSettings");
-  for (const i in DefaultSettings){
+  for (const i in DefaultSettings) {
     // @ts-ignore
     settings[i] = oldSettings[i] ?? DefaultSettings[i];
   }
 
   if (type === "reset") {
     const dict = [
-      "topColorDanger", "topColorWarning" ,"topColorSuccess",
-      "miniColorDanger", "miniColorWarning" ,"miniColorSuccess"
+      "topColorDanger",
+      "topColorWarning",
+      "topColorSuccess",
+      "miniColorDanger",
+      "miniColorWarning",
+      "miniColorSuccess",
     ];
     for (const k of dict) {
       // @ts-ignore
@@ -239,7 +242,7 @@ async function editFavTabMessage(): Promise<void> {
   }
 }
 
-async function reloadNavBar(courseIDList: Array<CourseSiteInfo>, useCache: boolean): Promise<void>{
+async function reloadNavBar(courseIDList: Array<CourseSiteInfo>, useCache: boolean): Promise<void> {
   // NavBarを再描画
   deleteNavBarNotification();
   const newAssignmentList = await loadAndMergeAssignmentList(courseIDList, useCache, useCache);
@@ -258,8 +261,10 @@ async function reloadMiniSakai(): Promise<void> {
 
   const newAssignmentList = await loadAndMergeAssignmentList(courseIDList, true, true);
   await displayMiniPandA(newAssignmentList, courseIDList);
-  console.log("reloaded")
+  console.log("reloaded");
 }
+
+
 
 export {
   toggleMiniSakai,

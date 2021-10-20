@@ -1,7 +1,13 @@
 import { Assignment, CourseSiteInfo, DisplayAssignment, DisplayAssignmentEntry } from "./model";
-import { createCourseIDMap, getDaysUntil, formatTimestamp, nowTime } from "./utils";
+import {createCourseIDMap, getDaysUntil, formatTimestamp, nowTime, setNowTime} from "./utils";
 import { appendChildAll, assignmentDiv, cloneElem, hamburger, miniPandA, SettingsDom } from "./dom";
-import { CPsettings, assignmentFetchedTime, quizFetchedTime, VERSION } from "./content_script";
+import {
+  CPsettings,
+  assignmentFetchedTime,
+  quizFetchedTime,
+  VERSION,
+  loadAndMergeAssignmentList, courseIDList
+} from "./content_script";
 import {
   addMemo,
   deleteMemo,
@@ -229,7 +235,7 @@ function registerEventHandlers(root: Element) {
   root.querySelector("#kadaiTab")?.addEventListener("click", () => toggleAssignmentTab());
   root.querySelector("#settingsTab")?.addEventListener("click", () => toggleSettingsTab());
   root.querySelectorAll(".todo-check").forEach((c) => c.addEventListener("change", (e) => toggleFinishedFlag(e)));
-  root.querySelector("#close_btn")?.addEventListener("click", async () => toggleMiniSakai());
+  root.querySelector("#close_btn")?.addEventListener("click", async () => await toggleMiniSakai());
   root.querySelector("#plus-button")?.addEventListener("click", () => toggleMemoBox());
   root.querySelector("#todo-add")?.addEventListener("click", () => addMemo());
   root.querySelectorAll(".del-button").forEach((b) => b.addEventListener("click", (e) => deleteMemo(e)));
@@ -246,6 +252,16 @@ function initState(root: Element) {
 
 async function displayMiniPandA(mergedAssignmentList: Array<Assignment>, courseSiteInfos: Array<CourseSiteInfo>): Promise<void>{
   createMiniPandA(mergedAssignmentList, courseSiteInfos);
+  refresh();
+  console.log("refresh minipanda");
+}
+
+function refresh() {
+  setTimeout(async function () {
+    const newAssignmentList = await loadAndMergeAssignmentList(courseIDList, true, true);
+    await displayMiniPandA(newAssignmentList, courseIDList);
+    setNowTime(new Date().getTime());
+  }, 1000 * 60);
 }
 
 function deleteNavBarNotification(): void {

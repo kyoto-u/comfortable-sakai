@@ -42,7 +42,7 @@ export const assignmentDiv = createElem("div", { className: "kadai-tab" });
 export const hamburger = createElem("div", { className: "loader" },
     {"click": async function () {
       // await reloadMiniSakai();
-      toggleMiniSakai();
+      await toggleMiniSakai();
     },
   }
 );
