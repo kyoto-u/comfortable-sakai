@@ -1,4 +1,4 @@
-import { reloadMiniSakai, toggleMiniSakai, updateSettings } from "./eventListener";
+import { toggleMiniSakai, updateSettings } from "./eventListener";
 
 function addAttributes(elem: any, dict?: { [key: string]: any }, eventListener?: { [key: string]: (e?:any)=>void|Promise<void> }): any{
   for (const key in dict) {

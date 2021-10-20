@@ -250,21 +250,9 @@ async function reloadNavBar(courseIDList: Array<CourseSiteInfo>, useCache: boole
 }
 
 async function reloadMiniSakai(): Promise<void> {
-  // while (miniPandA.firstChild) {
-  //   miniPandA.removeChild(miniPandA.firstChild);
-  // }
-  // while (assignmentDiv.firstChild) {
-  //   assignmentDiv.removeChild(assignmentDiv.firstChild);
-  // }
-  // miniPandA.remove();
-  // assignmentDiv.remove();
-
   const newAssignmentList = await loadAndMergeAssignmentList(courseIDList, true, true);
   await displayMiniPandA(newAssignmentList, courseIDList);
-  console.log("reloaded");
 }
-
-
 
 export {
   toggleMiniSakai,

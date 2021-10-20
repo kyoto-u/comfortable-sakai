@@ -253,15 +253,19 @@ function initState(root: Element) {
 async function displayMiniPandA(mergedAssignmentList: Array<Assignment>, courseSiteInfos: Array<CourseSiteInfo>): Promise<void>{
   createMiniPandA(mergedAssignmentList, courseSiteInfos);
   refresh();
-  console.log("refresh minipanda");
 }
 
 function refresh() {
   setTimeout(async function () {
     const newAssignmentList = await loadAndMergeAssignmentList(courseIDList, true, true);
+    // @ts-ignore
+    const scroll = document.getElementById("miniPandA").scrollTop;
+    console.log(scroll)
     await displayMiniPandA(newAssignmentList, courseIDList);
+    // @ts-ignore
+    document.getElementById("miniPandA").scrollTop = scroll;
     setNowTime(new Date().getTime());
-  }, 1000 * 60);
+  }, 1000 * 30);
 }
 
 function deleteNavBarNotification(): void {
