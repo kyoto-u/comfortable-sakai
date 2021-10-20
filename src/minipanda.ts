@@ -229,7 +229,7 @@ function registerEventHandlers(root: Element) {
   root.querySelector("#kadaiTab")?.addEventListener("click", () => toggleAssignmentTab());
   root.querySelector("#settingsTab")?.addEventListener("click", () => toggleSettingsTab());
   root.querySelectorAll(".todo-check").forEach((c) => c.addEventListener("change", (e) => toggleFinishedFlag(e)));
-  root.querySelector("#close_btn")?.addEventListener("click", () => toggleMiniSakai());
+  root.querySelector("#close_btn")?.addEventListener("click", async () => toggleMiniSakai());
   root.querySelector("#plus-button")?.addEventListener("click", () => toggleMemoBox());
   root.querySelector("#todo-add")?.addEventListener("click", () => addMemo());
   root.querySelectorAll(".del-button").forEach((b) => b.addEventListener("click", (e) => deleteMemo(e)));

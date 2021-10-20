@@ -1,4 +1,4 @@
-import { toggleMiniSakai } from "./eventListener";
+import { reloadMiniSakai, toggleMiniSakai, updateSettings } from "./eventListener";
 
 function addAttributes(elem: any, dict?: { [key: string]: any }, eventListener?: { [key: string]: (e?:any)=>void|Promise<void> }): any{
   for (const key in dict) {
@@ -39,7 +39,13 @@ miniPandA.classList.add("cp_tab");
 
 export const assignmentDiv = createElem("div", { className: "kadai-tab" });
 
-export const hamburger = createElem("div", { className: "loader" }, {"click": toggleMiniSakai});
+export const hamburger = createElem("div", { className: "loader" },
+    {"click": async function () {
+      // await reloadMiniSakai();
+      toggleMiniSakai();
+    },
+  }
+);
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace SettingsDom {
