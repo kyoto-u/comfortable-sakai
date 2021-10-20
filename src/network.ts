@@ -41,7 +41,6 @@ function getAssignmentByCourseID(baseURL: string, courseID: string): Promise<Ass
       .then(async (response) => {
         if (response.ok) {
           const res = await response.json();
-          console.log("kadai ", res)
           const courseSiteInfo = new CourseSiteInfo(courseID, courseID); // TODO: lectureName
           const assignmentEntries = convJsonToAssignmentEntries(res, baseURL, courseID);
           resolve(new Assignment(courseSiteInfo, assignmentEntries, false));
