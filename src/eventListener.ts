@@ -1,19 +1,10 @@
 import { assignmentDiv, miniPandA } from "./dom";
 import { loadFromLocalStorage, saveToLocalStorage } from "./storage";
-import {CourseSiteInfo, Assignment, AssignmentEntry} from "./model";
+import { CourseSiteInfo, Assignment, AssignmentEntry } from "./model";
 import { convertArrayToAssignment, genUniqueStr, mergeIntoAssignmentList } from "./utils";
-import {
-  CPsettings,
-  courseIDList,
-  loadAndMergeAssignmentList,
-  mergedAssignmentListNoMemo,
-} from "./content_script";
+import { CPsettings, courseIDList, loadAndMergeAssignmentList, mergedAssignmentListNoMemo } from "./content_script";
 import { DefaultSettings, Settings } from "./settings";
-import {
-  createNavBarNotification,
-  deleteNavBarNotification,
-  displayMiniPandA,
-} from "./minipanda";
+import { createNavBarNotification, deleteNavBarNotification, displayMiniPandA } from "./minipanda";
 
 let toggle = false;
 

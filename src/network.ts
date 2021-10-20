@@ -1,7 +1,5 @@
 import { Assignment, AssignmentEntry, CourseSiteInfo } from "./model";
 import { nowTime } from "./utils";
-import { CPsettings } from "./content_script";
-
 
 function getBaseURL(): string {
   let baseURL = "";

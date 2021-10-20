@@ -1,20 +1,13 @@
 import { loadFromLocalStorage, saveToLocalStorage } from "./storage";
 import { Assignment, CourseSiteInfo } from "./model";
-import {
-  getCourseIDList,
-  getBaseURL,
-  getAssignmentByCourseID,
-  getQuizFromCourseID,
-} from "./network";
-import {
-  createMiniSakaiBtn,
-  createNavBarNotification,
-  displayMiniPandA,
-} from "./minipanda";
+import { getCourseIDList, getBaseURL, getAssignmentByCourseID, getQuizFromCourseID } from "./network";
+import { createMiniSakaiBtn, createNavBarNotification, displayMiniPandA } from "./minipanda";
 import { addBookmarkedCourseSites } from "./bookmark";
+import { Settings } from "./settings";
 import {
   compareAndMergeAssignmentList,
-  convertArrayToAssignment, convertArrayToSettings,
+  convertArrayToAssignment,
+  convertArrayToSettings,
   isLoggedIn,
   mergeIntoAssignmentList,
   miniSakaiReady,
@@ -23,7 +16,6 @@ import {
   updateIsReadFlag,
   useCache,
 } from "./utils";
-import { DefaultSettings, Settings } from "./settings";
 
 export const baseURL = getBaseURL();
 export const VERSION = "1.0.0";
@@ -122,7 +114,11 @@ async function main() {
     createMiniSakaiBtn();
     await loadSettings();
     await loadCourseIDList();
-    mergedAssignmentList = await loadAndMergeAssignmentList(courseIDList, useCache(assignmentFetchedTime, assignmentCacheInterval), useCache(quizFetchedTime, quizCacheInterval));
+    mergedAssignmentList = await loadAndMergeAssignmentList(
+      courseIDList,
+      useCache(assignmentFetchedTime, assignmentCacheInterval),
+      useCache(quizFetchedTime, quizCacheInterval)
+    );
     await addBookmarkedCourseSites(baseURL);
     await displayMiniPandA(mergedAssignmentList, courseIDList);
     createNavBarNotification(courseIDList, mergedAssignmentList);
