@@ -2,7 +2,10 @@ import { Assignment, AssignmentEntry, CourseSiteInfo, DueCategory } from "./mode
 import { saveToLocalStorage } from "./storage";
 import {Settings} from "./settings";
 
-export const nowTime = new Date().getTime();
+export let nowTime = new Date().getTime();
+export function setNowTime(time: number): void {
+  nowTime = time;
+}
 
 function getDaysUntil(dt1: number, dt2: number): DueCategory {
   // 締め切りまでの日数を計算します
