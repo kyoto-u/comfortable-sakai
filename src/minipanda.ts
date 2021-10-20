@@ -1,6 +1,6 @@
 import { Assignment, CourseSiteInfo, DisplayAssignment, DisplayAssignmentEntry } from "./model";
 import { createCourseIDMap, getDaysUntil, formatTimestamp, nowTime } from "./utils";
-import { appendChildAll, cloneElem, hamburger, miniPandA, SettingsDom } from "./dom";
+import {appendChildAll, assignmentDiv, cloneElem, hamburger, miniPandA, SettingsDom} from "./dom";
 import { CPsettings, assignmentFetchedTime, quizFetchedTime, VERSION } from "./content_script";
 import {
   addMemo,
@@ -347,4 +347,15 @@ function overrideCSSColor() {
   overwriteborder("nav-warning", CPsettings.getTopColorWarning);
 }
 
-export { createMiniSakaiBtn, createMiniPandA, displayMiniPandA, deleteNavBarNotification, createNavBarNotification };
+function redrawMiniSakai(): void {
+  while (miniPandA.firstChild) {
+    miniPandA.removeChild(miniPandA.firstChild);
+  }
+  while (assignmentDiv.firstChild) {
+    assignmentDiv.removeChild(assignmentDiv.firstChild);
+  }
+  miniPandA.remove();
+  assignmentDiv.remove();
+}
+
+export { createMiniSakaiBtn, createMiniPandA, displayMiniPandA, deleteNavBarNotification, createNavBarNotification, redrawMiniSakai };

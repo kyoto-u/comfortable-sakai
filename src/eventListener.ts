@@ -4,7 +4,7 @@ import { CourseSiteInfo, Assignment, AssignmentEntry } from "./model";
 import { convertArrayToAssignment, genUniqueStr, mergeIntoAssignmentList } from "./utils";
 import { CPsettings, courseIDList, loadAndMergeAssignmentList, mergedAssignmentListNoMemo } from "./content_script";
 import { DefaultSettings, Settings } from "./settings";
-import { createNavBarNotification, deleteNavBarNotification, displayMiniPandA } from "./minipanda";
+import { createNavBarNotification, deleteNavBarNotification, displayMiniPandA, redrawMiniSakai } from "./minipanda";
 
 let toggle = false;
 
@@ -195,14 +195,8 @@ async function addMemo(): Promise<void> {
   saveToLocalStorage("TSkadaiMemoList", memoList);
 
   // miniPandAを再描画
-  while (miniPandA.firstChild) {
-    miniPandA.removeChild(miniPandA.firstChild);
-  }
-  while (assignmentDiv.firstChild) {
-    assignmentDiv.removeChild(assignmentDiv.firstChild);
-  }
-  miniPandA.remove();
-  assignmentDiv.remove();
+  redrawMiniSakai();
+
   const assignmentList = mergeIntoAssignmentList(mergedAssignmentListNoMemo, memoList);
   const quizList = await loadFromLocalStorage("TSQuizList");
   await displayMiniPandA(mergeIntoAssignmentList(assignmentList, quizList), courseIDList);
@@ -224,14 +218,7 @@ async function deleteMemo(event: any): Promise<void> {
   }
 
   // miniPandAを再描画
-  while (miniPandA.firstChild) {
-    miniPandA.removeChild(miniPandA.firstChild);
-  }
-  while (assignmentDiv.firstChild) {
-    assignmentDiv.removeChild(assignmentDiv.firstChild);
-  }
-  miniPandA.remove();
-  assignmentDiv.remove();
+  redrawMiniSakai();
 
   saveToLocalStorage("TSkadaiMemoList", deletedMemoList);
   const assignmentList = mergeIntoAssignmentList(mergedAssignmentListNoMemo, deletedMemoList);
