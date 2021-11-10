@@ -39,5 +39,10 @@
     "img/relaxPanda.png",
     "img/miniSakaiBtn.png",
     "views/minisakai.mustache"
-  ]
+  ],
+  "applications": {
+    "gecko": {
+      "id": "comfortable.sakai@kyoto-u"
+    }
+  }
 }
