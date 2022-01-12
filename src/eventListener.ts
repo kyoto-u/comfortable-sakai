@@ -1,96 +1,89 @@
-import { assignmentDiv, miniPandA } from "./dom";
+import { assignmentDiv, miniSakai } from "./dom";
 import { loadFromLocalStorage, saveToLocalStorage } from "./storage";
-import {CourseSiteInfo, Assignment, AssignmentEntry} from "./model";
-import { convertArrayToAssignment, genUniqueStr, mergeIntoAssignmentList } from "./utils";
-import {
-  CPsettings,
-  courseIDList,
-  loadAndMergeAssignmentList,
-  mergedAssignmentListNoMemo,
-} from "./content_script";
-import { DefaultSettings, Settings } from "./settings";
-import {
-  createNavBarNotification,
-  deleteNavBarNotification,
-  displayMiniPandA,
-} from "./minipanda";
+import { CourseSiteInfo, Assignment, AssignmentEntry } from "./model";
+import { convertArrayToAssignment, genUniqueID, mergeIntoAssignmentList } from "./utils";
+import { courseIDList, loadAndMergeAssignmentList, mergedAssignmentListNoMemo } from "./content_script";
+import { DefaultSettings, loadConfigs } from "./settings";
+import { createFavoritesBarNotification, deleteFavoritesBarNotification, displayMiniSakai } from "./minisakai";
 
 let toggle = false;
 
+/**
+ * Change visibility of miniSakai
+ */
 function toggleMiniSakai(): void {
-  // miniSakaiを表示・非表示にします
   if (toggle) {
-    miniPandA.style.width = "0px";
-    document.getElementById("cover")?.remove();
+    // Hide miniSakai
+    miniSakai.style.width = "0px";
+    document.getElementById("cs-cover")?.remove();
   } else {
-    miniPandA.style.width = "300px";
+    // Display miniSakai
+    miniSakai.style.width = "300px";
     const cover = document.createElement("div");
-    cover.id = "cover";
+    cover.id = "cs-cover";
     document.getElementsByTagName("body")[0].appendChild(cover);
     cover.onclick = toggleMiniSakai;
   }
   toggle = !toggle;
 }
 
+/**
+ * Change visibility of Assignment tab
+ */
 function toggleAssignmentTab(): void {
-  // 課題一覧タブの表示・非表示をします
-  const assignmentTab = document.querySelector(".kadai-tab");
-  // @ts-ignore
+  const assignmentTab = document.querySelector(".cs-assignment-tab") as HTMLElement;
   assignmentTab.style.display = "";
-  const settingsTab = document.querySelector(".settings-tab");
-  // @ts-ignore
+  const settingsTab = document.querySelector(".cs-settings-tab") as HTMLElement;
   settingsTab.style.display = "none";
-  const addMemoButton = document.querySelector("#plus-button");
-  // @ts-ignore
+  const addMemoButton = document.querySelector("#cs-add-memo-btn") as HTMLButtonElement;
   addMemoButton.style.display = "";
-  const assignmentFetchedTime = document.querySelector(".kadai-time");
-  // @ts-ignore
+  const assignmentFetchedTime = document.querySelector(".cs-assignment-time") as HTMLElement;
   assignmentFetchedTime.style.display = "";
-  const quizFetchedTime = document.querySelector(".quiz-time");
-  // @ts-ignore
+  const quizFetchedTime = document.querySelector(".cs-quiz-time") as HTMLElement;
   quizFetchedTime.style.display = "";
 }
 
+/**
+ * Change visibility of Settings tab
+ */
 function toggleSettingsTab(): void {
-  // クイズ・小テスト・試験一覧タブを表示・非表示にします
-  const assignmentTab = document.querySelector(".kadai-tab");
-  // @ts-ignore
+  const assignmentTab = document.querySelector(".cs-assignment-tab") as HTMLElement;
   assignmentTab.style.display = "none";
-  const settingsTab = document.querySelector(".settings-tab");
-  // @ts-ignore
+  const settingsTab = document.querySelector(".cs-settings-tab") as HTMLElement;
   settingsTab.style.display = "";
-  const addMemoButton = document.querySelector("#plus-button");
-  // @ts-ignore
+  const addMemoButton = document.querySelector("#cs-add-memo-btn") as HTMLButtonElement;
   addMemoButton.style.display = "none";
-  const assignmentFetchedTime = document.querySelector(".kadai-time");
-  // @ts-ignore
+  const assignmentFetchedTime = document.querySelector(".cs-assignment-time") as HTMLElement;
   assignmentFetchedTime.style.display = "none";
-  const quizFetchedTime = document.querySelector(".quiz-time");
-  // @ts-ignore
+  const quizFetchedTime = document.querySelector(".cs-quiz-time") as HTMLElement;
   quizFetchedTime.style.display = "none";
 }
 
+/**
+ * Change visibility of Memo box
+ */
 function toggleMemoBox(): void {
-  // メモ追加のボックスを表示・非表示にします
-  const addMemoBox = document.querySelector(".addMemoBox");
-  // @ts-ignore
+  const addMemoBox = document.querySelector(".addMemoBox") as HTMLElement;
   const toggleStatus = addMemoBox.style.display;
   if (toggleStatus === "") {
-    // @ts-ignore
     addMemoBox.style.display = "none";
   } else {
-    // @ts-ignore
     addMemoBox.style.display = "";
   }
 }
 
+/**
+ * Toggle finished checkbox for assignment/quiz
+ */
 async function toggleFinishedFlag(event: any): Promise<void> {
   const assignmentID = event.target.id;
   let assignmentList: Array<Assignment>;
-  // "m"から始まるものはメモ，"q"から始まるものはクイズを表してる
-  if (assignmentID[0] === "m") assignmentList = convertArrayToAssignment(await loadFromLocalStorage("TSkadaiMemoList"));
-  else if (assignmentID[0] === "q") assignmentList = convertArrayToAssignment(await loadFromLocalStorage("TSQuizList"));
-  else assignmentList = convertArrayToAssignment(await loadFromLocalStorage("TSkadaiList"));
+  // AssignmentID prefix:
+  // "q" -> Quiz
+  // "m" -> Memo
+  if (assignmentID[0] === "m") assignmentList = convertArrayToAssignment(await loadFromLocalStorage("CS_MemoList"));
+  else if (assignmentID[0] === "q") assignmentList = convertArrayToAssignment(await loadFromLocalStorage("CS_QuizList"));
+  else assignmentList = convertArrayToAssignment(await loadFromLocalStorage("CS_AssignmentList"));
 
   const updatedAssignmentList = [];
   for (const assignment of assignmentList) {
@@ -105,6 +98,7 @@ async function toggleFinishedFlag(event: any): Promise<void> {
             assignmentEntry.assignmentID,
             assignmentEntry.assignmentTitle,
             assignmentEntry.dueDateTimestamp,
+            assignmentEntry.closeDateTimestamp,
             assignmentEntry.isMemo,
             !isFinished,
             isQuiz,
@@ -118,46 +112,43 @@ async function toggleFinishedFlag(event: any): Promise<void> {
     updatedAssignmentList.push(new Assignment(assignment.courseSiteInfo, updatedAssignmentEntries, assignment.isRead));
   }
 
-  if (assignmentID[0] === "m") await saveToLocalStorage("TSkadaiMemoList", updatedAssignmentList);
-  else if (assignmentID[0] === "q") await saveToLocalStorage("TSQuizList", updatedAssignmentList);
-  else await saveToLocalStorage("TSkadaiList", updatedAssignmentList);
+  // Save to local storage
+  if (assignmentID[0] === "m") await saveToLocalStorage("CS_MemoList", updatedAssignmentList);
+  else if (assignmentID[0] === "q") await saveToLocalStorage("CS_QuizList", updatedAssignmentList);
+  else await saveToLocalStorage("CS_AssignmentList", updatedAssignmentList);
 
-  // NavBarを再描画
-  await reloadNavBar(courseIDList, true);
+  await redrawFavoritesBar(courseIDList, true);
 }
 
+/**
+ * Update Settings parameter
+ */
 async function updateSettings(event: any, type: string): Promise<void> {
   const settingsID = event.target.id;
-  let settingsValue = event.currentTarget.value;
+  let settingsValue = event.target.value;
+  const config = await loadConfigs();
+  const CSsettings = config.CSsettings;
 
+  // Type of Settings
   switch (type) {
     case "check":
-      settingsValue = event.currentTarget.checked;
+      settingsValue = event.target.checked;
       break;
     case "number":
-      settingsValue = parseInt(event.currentTarget.value);
+      settingsValue = parseInt(event.target.value);
       break;
     case "string":
       break;
   }
 
-  const settings = new Settings();
-  const oldSettings = await loadFromLocalStorage("TSSettings");
-  for (const i in DefaultSettings){
-    // @ts-ignore
-    settings[i] = oldSettings[i] ?? DefaultSettings[i];
-  }
-
   if (type === "reset") {
-    const dict = [
+    const colorList = [
       "topColorDanger", "topColorWarning" ,"topColorSuccess",
       "miniColorDanger", "miniColorWarning" ,"miniColorSuccess"
     ];
-    for (const k of dict) {
+    for (const k of colorList) {
       // @ts-ignore
-      settings[k] = DefaultSettings[k];
-      // @ts-ignore
-      CPsettings[k] = DefaultSettings[k];
+      CSsettings[k] = DefaultSettings[k];
       const q = <HTMLInputElement>document.getElementById(k);
       if (q) {
         // @ts-ignore
@@ -166,32 +157,33 @@ async function updateSettings(event: any, type: string): Promise<void> {
     }
   } else {
     // @ts-ignore
-    settings[settingsID] = settingsValue;
-    // @ts-ignore
-    CPsettings[settingsID] = settingsValue;
+    CSsettings[settingsID] = settingsValue;
   }
 
-  saveToLocalStorage("TSSettings", settings);
+  await saveToLocalStorage("CS_Settings", CSsettings);
 
-  // NavBarを再描画
-  await reloadNavBar(courseIDList, true);
+  await redrawFavoritesBar(courseIDList, true);
 }
 
+/**
+ * Add Memo to miniSakai and save.
+ */
 async function addMemo(): Promise<void> {
   const selectedIdx = (document.querySelector(".todoLecName") as HTMLSelectElement).selectedIndex;
   const courseID = (document.querySelector(".todoLecName") as HTMLSelectElement).options[selectedIdx].id;
   const memoTitle = (document.querySelector(".todoContent") as HTMLInputElement).value;
+
   // @ts-ignore
   const memoDueDateTimestamp = new Date(document.querySelector(".todoDue").value).getTime() / 1000;
 
-  let memoList = await loadFromLocalStorage("TSkadaiMemoList");
-  const memoEntry = new AssignmentEntry(genUniqueStr(), memoTitle, memoDueDateTimestamp, true, false, false, "");
+  let memoList = await loadFromLocalStorage("CS_MemoList");
+  const memoEntry = new AssignmentEntry(genUniqueID("m"), memoTitle, memoDueDateTimestamp, memoDueDateTimestamp, true, false, false, "");
   const memo = new Assignment(new CourseSiteInfo(courseID, courseID), [memoEntry], true);
 
   if (typeof memoList !== "undefined" && memoList.length > 0) {
     memoList = convertArrayToAssignment(memoList);
     const idx = memoList.findIndex((oldMemo: Assignment) => {
-      return (oldMemo.courseSiteInfo.courseID === courseID);
+      return oldMemo.courseSiteInfo.courseID === courseID;
     });
     if (idx !== -1) {
       memoList[idx].assignmentEntries.push(memoEntry);
@@ -201,28 +193,22 @@ async function addMemo(): Promise<void> {
   } else {
     memoList = [memo];
   }
-  saveToLocalStorage("TSkadaiMemoList", memoList);
+  saveToLocalStorage("CS_MemoList", memoList);
 
-  // miniPandAを再描画
-  while (miniPandA.firstChild) {
-    miniPandA.removeChild(miniPandA.firstChild);
-  }
-  while (assignmentDiv.firstChild) {
-    assignmentDiv.removeChild(assignmentDiv.firstChild);
-  }
-  miniPandA.remove();
-  assignmentDiv.remove();
   const assignmentList = mergeIntoAssignmentList(mergedAssignmentListNoMemo, memoList);
-  const quizList = await loadFromLocalStorage("TSQuizList");
-  await displayMiniPandA(mergeIntoAssignmentList(assignmentList, quizList), courseIDList);
+  const quizList = await loadFromLocalStorage("CS_QuizList");
+  redrawMiniSakai();
+  await displayMiniSakai(mergeIntoAssignmentList(assignmentList, quizList), courseIDList);
 
-  // NavBarを再描画
-  await reloadNavBar(courseIDList, true);
+  await redrawFavoritesBar(courseIDList, true);
 }
 
+/**
+ * Delete Memo from miniSakai and storage.
+ */
 async function deleteMemo(event: any): Promise<void> {
   const memoID = event.target.id;
-  const memoList = convertArrayToAssignment(await loadFromLocalStorage("TSkadaiMemoList"));
+  const memoList = convertArrayToAssignment(await loadFromLocalStorage("CS_MemoList"));
   const deletedMemoList = [];
   for (const memo of memoList) {
     const memoEntries = [];
@@ -232,32 +218,26 @@ async function deleteMemo(event: any): Promise<void> {
     deletedMemoList.push(new Assignment(memo.courseSiteInfo, memoEntries, memo.isRead));
   }
 
-  // miniPandAを再描画
-  while (miniPandA.firstChild) {
-    miniPandA.removeChild(miniPandA.firstChild);
-  }
-  while (assignmentDiv.firstChild) {
-    assignmentDiv.removeChild(assignmentDiv.firstChild);
-  }
-  miniPandA.remove();
-  assignmentDiv.remove();
-
-  saveToLocalStorage("TSkadaiMemoList", deletedMemoList);
+  saveToLocalStorage("CS_MemoList", deletedMemoList);
   const assignmentList = mergeIntoAssignmentList(mergedAssignmentListNoMemo, deletedMemoList);
-  const quizList = await loadFromLocalStorage("TSQuizList");
-  await displayMiniPandA(mergeIntoAssignmentList(assignmentList, quizList), courseIDList);
+  const quizList = await loadFromLocalStorage("CS_QuizList");
+  redrawMiniSakai();
+  await displayMiniSakai(mergeIntoAssignmentList(assignmentList, quizList), courseIDList);
 
-  // NavBarを再描画
-  await reloadNavBar(courseIDList, true);
+  await redrawFavoritesBar(courseIDList, true);
 }
 
-async function editFavTabMessage(): Promise<void> {
-  // 200ms待ってからgetElementしないと，jQueryで生成される前に参照してしまう
+/**
+ * Edit default message of favorites tab.
+ */
+async function editFavoritesMessage(): Promise<void> {
+  // Wait 200ms until jQuery finished generating message.
   await new Promise((r) => setTimeout(r, 200));
   try {
     const message = document.getElementsByClassName("favorites-max-marker")[0];
-    message.innerHTML =
-      '<i class="fa fa-bell warning-icon"></i>ComfortablePandAによってお気に入り登録した<br>サイトが全てバーに追加されました。';
+    message.innerHTML = `<i class="fa fa-bell warning-icon"></i>${
+      chrome.runtime.getManifest().name
+    }によってお気に入り登録した<br>サイトが全てバーに追加されました。`;
     const lectureTabs = document.getElementsByClassName("fav-sites-entry");
     const lectureTabsCount = lectureTabs.length;
     for (let i = 0; i < lectureTabsCount; i++) {
@@ -268,11 +248,30 @@ async function editFavTabMessage(): Promise<void> {
   }
 }
 
-async function reloadNavBar(courseIDList: Array<CourseSiteInfo>, useCache: boolean): Promise<void>{
-  // NavBarを再描画
-  deleteNavBarNotification();
-  const newAssignmentList = await loadAndMergeAssignmentList(courseIDList, useCache, useCache);
-  createNavBarNotification(courseIDList, newAssignmentList);
+/**
+ * Redraw favorites bar
+ * @param {CourseSiteInfo[]} courseIDList
+ * @param {boolean} useCache
+ */
+async function redrawFavoritesBar(courseIDList: Array<CourseSiteInfo>, useCache: boolean): Promise<void> {
+  deleteFavoritesBarNotification();
+  const config = await loadConfigs();
+  const newAssignmentList = await loadAndMergeAssignmentList(config, courseIDList, useCache, useCache);
+  await createFavoritesBarNotification(courseIDList, newAssignmentList);
+}
+
+/**
+ * Redraw miniSakai
+ */
+function redrawMiniSakai() {
+  while (miniSakai.firstChild) {
+    miniSakai.removeChild(miniSakai.firstChild);
+  }
+  while (assignmentDiv.firstChild) {
+    assignmentDiv.removeChild(assignmentDiv.firstChild);
+  }
+  miniSakai.remove();
+  assignmentDiv.remove();
 }
 
 export {
@@ -284,5 +283,5 @@ export {
   addMemo,
   updateSettings,
   deleteMemo,
-  editFavTabMessage,
+  editFavoritesMessage,
 };

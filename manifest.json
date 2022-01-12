@@ -1,7 +1,7 @@
 {
   "name": "Comfortable Sakai",
   "description": "__MSG_EXTENSION_DESCRIPTION__",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "manifest_version": 2,
   "default_locale": "en",
   "icons": {
@@ -19,7 +19,7 @@
         "content_script.js"
       ],
       "css": [
-        "css/custom-panda.css"
+        "css/comfortable-sakai.css"
       ],
       "matches": ["http://*/*", "https://*/*"]
     }
@@ -34,9 +34,9 @@
     "storage"
   ],
   "web_accessible_resources": [
-    "css/custom-panda.css",
+    "css/comfortable-sakai.css",
     "img/logo.png",
-    "img/relaxPanda.png",
+    "img/noAssignment.png",
     "img/miniSakaiBtn.png",
     "views/minisakai.mustache"
   ],
