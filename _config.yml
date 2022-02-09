@@ -23,9 +23,11 @@ permalink: pretty
 #   3rd Party Settings    #
 # ----------------------- #
 social:
-  - title: github
+  - name: github
     url: https://github.com/kyoto-u/comfortable-sakai
-  - title: chrome
+  - name: chrome
+    text: Chrome Store
     url: https://chrome.google.com/webstore/detail/comfortable-sakai/dljchadmceknaijmdmnaaodjkkidhakh?hl=ja&authuser=0
-  - title: firefox
+  - name: firefox
+    text: Add-ons
     url: https://www.mozilla.org/ja/firefox/new/
