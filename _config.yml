@@ -1,0 +1,33 @@
+# ----------------------- #
+#      Main Configs       #
+# ----------------------- #
+
+url: http://yoursite.com
+title: Comfortable Sakai
+email: your-email@domain.com
+author: Kazuki Takeda, Shoji Kajita
+description: > 
+  Comfortable Sakai is a Web browser extension for improving UX of Sakai LMS.
+copyright: 'Copyright &copy; 2022 Kazuki Takeda, Shoji Kajita. All Rights Reserved.'
+credits: 'Credits: Landing Page is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com/">Start Bootstrap</a>.'
+
+# ----------------------- #
+#    Jekyll & Plugins     #
+# ----------------------- #
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+# ----------------------- #
+#   3rd Party Settings    #
+# ----------------------- #
+social:
+  - name: github
+    url: https://github.com/kyoto-u/comfortable-sakai
+  - name: chrome
+    text: Chrome Store
+    url: https://chrome.google.com/webstore/detail/comfortable-sakai/dljchadmceknaijmdmnaaodjkkidhakh?hl=ja&authuser=0
+  - name: firefox
+    text: Add-ons
+    url: https://www.mozilla.org/ja/firefox/new/
