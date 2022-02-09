@@ -18,7 +18,7 @@
                     <a class="page-scroll" href="#about">About</a>
                 </li>            
                 <li>
-                    <a class="page-scroll" href="#services">Services</a>
+                    <a class="page-scroll" href="#features">Features</a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#contact">Contact</a>
@@ -45,7 +45,7 @@
 						<ul class="list-inline intro-social-buttons">
 							{% for social in site.social %}
 							<li>
-								<a href="{{ social.url }}" class="btn btn-default btn-lg"><i class="fa fa-{{ social.title }} fa-fw"></i> <span class="network-name">{{ social.title }}</span></a>
+								<a href="{{ social.url }}" class="btn btn-default btn-lg"><i class="fab fa-{{ social.title }} fa-fw"></i> <span class="network-name">{{ social.title }}</span></a>
 							</li>
 							{% endfor %}
 						</ul>
