@@ -5,4 +5,4 @@ category: Services
 title: New Assignment Badge
 description: |
 ---
-This template features the 'Lato' font, part of the [Google Web Font library](http://www.google.com/fonts), as well as [icons from Font Awesome](http://fontawesome.io).
+When a new assignment is published, a **red** notification badge will appear in the upper left corner of the Course Site tab.
