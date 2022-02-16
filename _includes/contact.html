@@ -10,7 +10,7 @@
 					<ul class="list-inline banner-social-buttons">
 						{% for social in site.social %}
 						<li>
-							<a href="{{ social.url }}" class="btn btn-default btn-lg"><i class="fa fa-{{ social.title }} fa-fw"></i> <span class="network-name">{{ social.title }}</span></a>
+							<a href="{{ social.url }}" class="btn btn-default btn-lg"><i class="fab fa-{{ social.name }} fa-fw"></i> <span class="network-name">{% if social.text %}{{ social.text }}{% else %}{{ social.name }}{% endif %}</span></a>
 						</li>
 						{% endfor %}
 					</ul>
