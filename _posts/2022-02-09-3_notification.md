@@ -1,6 +1,6 @@
 ---
 layout: default
-img: phones.png
+img: badge.png
 category: Services
 title: New Assignment Badge
 description: |

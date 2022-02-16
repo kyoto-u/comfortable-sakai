@@ -1,6 +1,6 @@
 ---
 layout: default
-img: ipad.png
+img: color_tab_frame.png
 category: Services
 title: Colored Course Site Tabs
 description: |
