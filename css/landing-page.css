@@ -164,3 +164,13 @@ footer {
 p.copyright {
     margin: 15px 0 0;
 }
+
+.navbar-default {
+    background-color: #e9ffe1;
+    border-color: #c9fabf;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+    color: #555;
+    background-color: #caf1bc;
+}
