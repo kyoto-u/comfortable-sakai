@@ -1,7 +1,7 @@
 import { toggleMiniSakai } from "./eventListener";
 
 /**
- * Create DOM elements
+ * Create DOM elements.
  */
 function createElem(tag: string, dict?: { [key: string]: any }, eventListener?: { [key: string]: (e?: any) => void | Promise<void> }): any {
   const elem = document.createElement(tag);
