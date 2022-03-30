@@ -27,7 +27,7 @@ function getDaysUntil(dt1: number, dt2: number): DueCategory {
 }
 
 /**
- * Format timestamp for displaying
+ * Format timestamp for displaying.
  * @param {number | undefined} timestamp
  */
 function formatTimestamp(timestamp: number | undefined): string {
