@@ -4,7 +4,7 @@ import { Settings } from "./settings";
 export const nowTime = new Date().getTime();
 
 /**
- * Calculate category of assignment due date
+ * Calculate category of assignment due date.
  * @param {number} dt1 standard time
  * @param {number} dt2 target time
  */
