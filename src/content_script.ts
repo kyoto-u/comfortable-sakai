@@ -13,6 +13,7 @@ import {
   updateIsReadFlag,
   isUsingCache,
   getSakaiTheme,
+  miniSakaiReady
 } from "./utils";
 import { Config, loadConfigs } from "./settings";
 
@@ -124,6 +125,7 @@ async function main() {
     await displayMiniSakai(mergedAssignmentList, courseIDList);
     await createFavoritesBarNotification(courseIDList, mergedAssignmentList);
 
+    miniSakaiReady();
     await updateReadFlag();
   }
 }
