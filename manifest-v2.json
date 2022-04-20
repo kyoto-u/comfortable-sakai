@@ -1,0 +1,38 @@
+{
+  "name": "Comfortable Sakai",
+  "description": "__MSG_EXTENSION_DESCRIPTION__",
+  "version": "---",
+  "manifest_version": 2,
+  "default_locale": "en",
+  "icons": {
+    "16": "img/icon16.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
+  },
+  "browser_action": {
+    "default_title": "Comfortable Sakai",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["content_script.js"],
+      "css": ["css/comfortable-sakai.css"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "permissions": ["storage"],
+  "web_accessible_resources": [
+    "css/comfortable-sakai.css",
+    "img/logo.png",
+    "img/noAssignment.png",
+    "img/miniSakaiBtn.png",
+    "views/minisakai.mustache"
+  ]
+}
