@@ -66,9 +66,12 @@ The cache time can be changed in the configuration tab in `miniSakai`.
 # How to compile from source code
 Run
 ```bash
+npm install
+export NODE_ENV=production
 npm run build:all
 ```
-in the root directory of cloned repository.
+in the root directory of cloned repository.  
+zip files will be placed under `dist/release` directory.
 
 # How to run tests
 ```bash
