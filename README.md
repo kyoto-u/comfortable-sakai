@@ -13,6 +13,8 @@ Originated from [Comfortable PandA](https://github.com/comfortable-panda/Comfort
 
 # How to install Comfortable Sakai
 ## Google Chrome
+Download from [Chrome Web Store](https://addons.mozilla.org/ja/firefox/addon/comfortable-sakai/)
+<!--
 1. Download latest version of `Comfortable-Sakai.zip` from [HERE](https://github.com/kyoto-u/comfortable-sakai/releases).
 2. Unzip `Comfortable-Sakai.zip`.
 3. Go to `chrome://extensions/` on your Google Chrome.
@@ -20,13 +22,17 @@ Originated from [Comfortable PandA](https://github.com/comfortable-panda/Comfort
 5. Click **LOAD UNPACKED** button on upper left corner.
 6. Select the folder you unzipped and install.
 7. You are now ready to use :) Log in to your Sakai LMS website!
+-->
 
 ## Firefox
+Download from [Firefox Addons](https://addons.mozilla.org/ja/firefox/addon/comfortable-sakai/)
+<!--
 1. Download latest version of `Comfortable-Sakai.zip` from [HERE](https://github.com/kyoto-u/comfortable-sakai/releases).
 3. Go to `about:debugging#/runtime/this-firefox` on your Firefox.
 5. Click **Load Temporary Add-on...** button in `Temporary Extensions` section.
 6. Select the zip file you downloaded and install.
 7. You are now ready to use :) Log in to your Sakai LMS website!
+-->
 
 # Features
 ## Color-coded course site tabs
