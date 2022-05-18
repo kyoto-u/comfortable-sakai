@@ -13,7 +13,7 @@ Originated from [Comfortable PandA](https://github.com/comfortable-panda/Comfort
 
 # How to install Comfortable Sakai
 ## Google Chrome
-Download from [Chrome Web Store](https://addons.mozilla.org/ja/firefox/addon/comfortable-sakai/)
+Download from [Chrome Web Store](https://chrome.google.com/webstore/detail/comfortable-sakai/dljchadmceknaijmdmnaaodjkkidhakh)
 <!--
 1. Download latest version of `Comfortable-Sakai.zip` from [HERE](https://github.com/kyoto-u/comfortable-sakai/releases).
 2. Unzip `Comfortable-Sakai.zip`.
