@@ -11,7 +11,7 @@
   },
   "action": {
     "default_title": "Comfortable Sakai",
-    "default_popup": "popup.html"
+    "default_popup": "subsakai.html"
   },
   "content_scripts": [
     {
