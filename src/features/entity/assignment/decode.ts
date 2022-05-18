@@ -2,22 +2,30 @@ import { Assignment, AssignmentEntry } from "./types";
 import { Course } from "../../course/types";
 import { CurrentTime } from "../../../constant";
 
-/* Sakai APIから取得した課題をAssignmentEntryに変換する */
+/**
+ * Decode Assignment data from Sakai REST API to AssignmentEntry array.
+ * @param data - Data from Sakai REST API.
+ * @returns {Array<AssignmentEntry>} - Decoded AssignmentEntry array.
+ */
 export const decodeAssignmentFromAPI = (data: Record<string, any>): Array<AssignmentEntry> => {
     return data.assignment_collection
         .filter((json: any) => json.closeTime.epochSecond >= CurrentTime)
         .map((json: any) => {
-            const entry = new AssignmentEntry(
+            return new AssignmentEntry(
                 json.id,
                 json.title,
                 json.dueTime.epochSecond ? json.dueTime.epochSecond : null,
                 json.closeTime.epochSecond ? json.closeTime.epochSecond : null,
                 false
             );
-            return entry;
         });
 };
 
+/**
+ * Decode Assignment data from Storage to Assignment array.
+ * @param data - Data from Storage.
+ * @returns {Array<Assignment>} - Decoded Assignment array.
+ */
 export const decodeAssignmentFromArray = (data: Array<any>): Array<Assignment> => {
     const assignments: Array<Assignment> = [];
     if (typeof data === "undefined") return assignments;

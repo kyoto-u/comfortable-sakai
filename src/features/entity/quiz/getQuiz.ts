@@ -6,7 +6,13 @@ import { toStorage, fromStorage } from "../../storage";
 import { mergeEntities } from "../../merge";
 import { QuizFetchTimeStorage, QuizzesStorage } from "../../../constant";
 
-export const getSakaiQuizzes = async (hostname: string, courses: Array<Course>): Promise<Array<Quiz>> => {
+/**
+ * Get Quizzes from Sakai REST API.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
+ * @param courses - List of Course sites.
+ * @returns {Promise<Array<Quiz>>}
+ */
+const getSakaiQuizzes = async (hostname: string, courses: Array<Course>): Promise<Array<Quiz>> => {
     const quizzes: Array<Quiz> = [];
     const pending: Array<Promise<Quiz>> = [];
     for (const course of courses) {
@@ -20,13 +26,26 @@ export const getSakaiQuizzes = async (hostname: string, courses: Array<Course>):
     return quizzes;
 };
 
-export const getStoredQuizzes = (hostname: string): Promise<Array<Quiz>> => {
+/**
+ * Get Quizzes from Storage.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
+ * @returns {Promise<Array<Quiz>>}
+ */
+const getStoredQuizzes = (hostname: string): Promise<Array<Quiz>> => {
     return fromStorage<Array<Quiz>>(hostname, QuizzesStorage, decodeQuizFromArray);
 };
 
+/**
+ * Get Quizzes according to cache flag.
+ * If cache flag is true, this returns Quizzes from Storage.
+ * Otherwise, returns Quizzes from Sakai REST API.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
+ * @param courses - List of Course sites.
+ * @param useCache - A flag to use cache.
+ * @returns {Promise<Array<Quiz>>}
+ */
 export const getQuizzes = async (hostname: string, courses: Array<Course>, useCache: boolean): Promise<Array<Quiz>> => {
     const storedQuizzes = await getStoredQuizzes(hostname);
-    // console.log("getQuiz, useCache:", useCache);
     if (useCache) return storedQuizzes;
     const sakaiQuizzes = await getSakaiQuizzes(hostname, courses);
     const merged = mergeEntities<Quiz>(storedQuizzes, sakaiQuizzes);

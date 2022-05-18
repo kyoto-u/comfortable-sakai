@@ -3,9 +3,13 @@ import { createRoot } from "react-dom/client";
 import { MiniSakaiRoot } from "./components/main";
 import { Settings } from "./features/setting/types";
 
-let toggle = false;
 /**
- * Change visibility of miniSakai
+ * Toggle state for miniSakai
+ */
+let toggle = false;
+
+/**
+ * Change visibility of miniSakai.
  */
 export const toggleMiniSakai = (): void => {
     if (toggle) {
@@ -34,9 +38,9 @@ hamburger.className = "cs-loading";
 hamburger.addEventListener("click", toggleMiniSakai);
 
 /**
- * Create a button to open miniSakai
+ * Add a button to open miniSakai.
  */
-export function createMiniSakaiBtn(): void {
+export function addMiniSakaiBtn(): void {
     const topbar = document.getElementById("mastLogin");
     try {
         topbar?.appendChild(hamburger);
@@ -46,7 +50,8 @@ export function createMiniSakaiBtn(): void {
 }
 
 /**
- * Insert miniSakai into Sakai.
+ * Insert miniSakai into Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  */
 export function createMiniSakai(hostname: string) {
     const parent = document.getElementsByClassName("Mrphs-mainHeader")[0];
@@ -56,6 +61,11 @@ export function createMiniSakai(hostname: string) {
     root.render(<MiniSakaiRoot subset={false} hostname={hostname} />);
 }
 
+/**
+ * Sets color theme to CSS custom property.
+ * @param settings - Settings for miniSakai.
+ * @param isSubSakai - SubSakai or not.
+ */
 export const applyColorSettings = (settings: Settings, isSubSakai: boolean): void => {
     let bodyStyles: HTMLElement;
     if (!isSubSakai) {

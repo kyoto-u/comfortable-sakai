@@ -1,10 +1,13 @@
 import { saveHostName } from "./features/storage";
-import { createMiniSakai, createMiniSakaiBtn } from "./minisakai";
+import { createMiniSakai, addMiniSakaiBtn } from "./minisakai";
 import { isLoggedIn, miniSakaiReady } from "./utils";
 
+/**
+ * Creates miniSakai.
+ */
 async function main() {
     if (isLoggedIn()) {
-        createMiniSakaiBtn();
+        addMiniSakaiBtn();
         const hostname = window.location.hostname;
         createMiniSakai(hostname);
 

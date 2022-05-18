@@ -2,7 +2,11 @@ import { Quiz, QuizEntry } from "./types";
 import { Course } from "../../course/types";
 import { CurrentTime, MaxTimestamp } from "../../../constant";
 
-/* Sakai APIから取得した課題をQuizEntryに変換する */
+/**
+ * Decode Quiz data from Sakai REST API to QuizEntry array.
+ * @param data - Data from Sakai REST API.
+ * @returns {Array<QuizEntry>} - Decoded QuizEntry array.
+ */
 export const decodeQuizFromAPI = (data: Record<string, any>): Array<QuizEntry> => {
     return data.sam_pub_collection
         .filter((json: any) => json.startDate < CurrentTime * 1000 && (json.dueDate >= CurrentTime * 1000 || json.dueDate == null))
@@ -17,6 +21,11 @@ export const decodeQuizFromAPI = (data: Record<string, any>): Array<QuizEntry> =
         });
 };
 
+/**
+ * Decode Quiz data from Storage to Quiz array.
+ * @param data - Data from Storage.
+ * @returns {Array<Quiz>} - Decoded Quiz array.
+ */
 export const decodeQuizFromArray = (data: Array<any>): Array<Quiz> => {
     const quizzes: Array<Quiz> = [];
     if (typeof data === "undefined") return quizzes;
