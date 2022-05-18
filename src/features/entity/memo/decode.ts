@@ -2,6 +2,11 @@ import { Memo, MemoEntry } from "./types";
 import { Course } from "../../course/types";
 import { CurrentTime } from "../../../constant";
 
+/**
+ * Decode Memo data from Storage to Memo array.
+ * @param data - Data from Storage.
+ * @returns {Array<Memo>} - Decoded Memo array.
+ */
 export const decodeMemoFromArray = (data: Array<any>): Array<Memo> => {
     const memos: Array<Memo> = [];
     if (typeof data === "undefined") return memos;

@@ -6,7 +6,13 @@ import { toStorage, fromStorage } from "../../storage";
 import { mergeEntities } from "../../merge";
 import { AssignmentFetchTimeStorage, AssignmentsStorage } from "../../../constant";
 
-export const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Promise<Array<Assignment>> => {
+/**
+ * Get Assignments from Sakai REST API.
+ * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param courses - List of Course sites.
+ * @returns {Promise<Array<Assignment>>}
+ */
+const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Promise<Array<Assignment>> => {
     const assignments: Array<Assignment> = [];
     const pending: Array<Promise<Assignment>> = [];
     for (const course of courses) {
@@ -20,17 +26,30 @@ export const getSakaiAssignments = async (hostname: string, courses: Array<Cours
     return assignments;
 };
 
-export const getStoredAssignments = (hostname: string): Promise<Array<Assignment>> => {
+/**
+ * Get Assignments from Storage.
+ * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @returns {Promise<Array<Assignment>>}
+ */
+const getStoredAssignments = (hostname: string): Promise<Array<Assignment>> => {
     return fromStorage<Array<Assignment>>(hostname, AssignmentsStorage, decodeAssignmentFromArray);
 };
 
+/**
+ * Get Assignments according to cache flag.
+ * If cache flag is true, this returns Assignments from Storage.
+ * Otherwise, returns Assignments from Sakai REST API.
+ * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param courses - List of Course sites.
+ * @param useCache - A flag to use cache.
+ * @returns {Promise<Array<Assignment>>}
+ */
 export const getAssignments = async (
     hostname: string,
     courses: Array<Course>,
     useCache: boolean
 ): Promise<Array<Assignment>> => {
     const storedAssignments = await getStoredAssignments(hostname);
-    // console.log("getAssignment, useCache:", useCache);
     if (useCache) return storedAssignments;
     const sakaiAssignments = await getSakaiAssignments(hostname, courses);
     const merged = mergeEntities<Assignment>(storedAssignments, sakaiAssignments);
