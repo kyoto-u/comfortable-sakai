@@ -6,6 +6,12 @@ import { getCourseSiteID } from "../../utils";
  */
 const MAX_FAVORITES = 20;
 
+/**
+ * Creates a Map object of Course name and Course page link from "viewAllSites" modal.
+ * Key: Course ID
+ * Value : {Course page link, Course name}
+ * @returns {Map<string, { href: string, title: string }>}
+ */
 const getSiteIdAndHrefSiteNameMap = (): Map<string, { href: string, title: string }> => {
     const sites = document.querySelectorAll(".fav-sites-entry");
     const map = new Map<string, { href: string; title: string }>();
@@ -20,7 +26,8 @@ const getSiteIdAndHrefSiteNameMap = (): Map<string, { href: string, title: strin
 };
 
 /**
- * Get hrefs of sites in favorite bar
+ * Get links of Courses in favorites bar.
+ * @returns {Array<string>}
  */
 const getCurrentFavoritesSite = (): Array<string> => {
     const topnav = document.querySelector("#topnav");
@@ -35,7 +42,8 @@ const getCurrentFavoritesSite = (): Array<string> => {
 };
 
 /**
- * Add course sites to favorites bar (more than Sakai config)
+ * Add Course sites to favorites bar.
+ * Intended to exceed the maximum numbers of Course site that can be set to favorites bar.
  * @param {string} baseURL
  */
 export const addFavoritedCourseSites = (baseURL: string): Promise<void> => {
@@ -86,8 +94,11 @@ export const addFavoritedCourseSites = (baseURL: string): Promise<void> => {
     });
 };
 
+/**
+ * Displays a message that Comfortable Sakai has added more Courses to favorites bar.
+ */
 async function editFavoritesMessage(): Promise<void> {
-    // Wait 200ms until jQuery finished generating message.
+    // Wait 200ms until jQuery finishes generating message.
     await new Promise((r) => setTimeout(r, 200));
     try {
         const message = document.getElementsByClassName("favorites-max-marker")[0];
