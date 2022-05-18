@@ -6,14 +6,12 @@ const path = require("path");
 const specificConfig = Object.assign({}, commonConfig);
 
 specificConfig.output = {
-    path: path.resolve(__dirname, '..') + "/dist/source/firefox"
+    path: path.resolve(__dirname, "..") + "/dist/source/firefox"
 };
 
 specificConfig.plugins.push(
     new CopyPlugin({
-        patterns: [
-            { from: "./manifest.json" }
-        ]
+        patterns: [{ from: "./manifest.json" }]
     }),
     new MergeManifestPlugin({
         browser: "firefox"

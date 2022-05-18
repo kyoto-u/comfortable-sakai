@@ -7,19 +7,20 @@ module.exports = class MergeManifestWebpackPlugin {
             browser: "chrome"
         };
     }
+
     apply(compiler) {
         compiler.hooks.done.tap("ManifestPlugin", async (stats) => {
             const { browser } = this.options;
-            const packagePath = path.resolve(__dirname, '..') + "/package.json";
-            const manifestPath = path.resolve(__dirname, '..') + "/manifest.json";
-            const manifestV2Path = path.resolve(__dirname, '..') + "/manifest-v2.json";
-            const firefoxManifestPath = path.resolve(__dirname, '..') + "/manifest-firefox.json";
-            const savePath = path.resolve(__dirname, '..') + `/dist/source/${browser}/manifest.json`;
+            const packagePath = path.resolve(__dirname, "..") + "/package.json";
+            const manifestPath = path.resolve(__dirname, "..") + "/manifest.json";
+            const manifestV2Path = path.resolve(__dirname, "..") + "/manifest-v2.json";
+            const firefoxManifestPath = path.resolve(__dirname, "..") + "/manifest-firefox.json";
+            const savePath = path.resolve(__dirname, "..") + `/dist/source/${browser}/manifest.json`;
 
-            const packageJson = await fs.readFile(packagePath, 'utf8');
-            const manifestJson = await fs.readFile(manifestPath, 'utf8');
-            const manifestV2Json = await fs.readFile(manifestV2Path, 'utf8');
-            const ffManifestJson = await fs.readFile(firefoxManifestPath, 'utf8');
+            const packageJson = await fs.readFile(packagePath, "utf8");
+            const manifestJson = await fs.readFile(manifestPath, "utf8");
+            const manifestV2Json = await fs.readFile(manifestV2Path, "utf8");
+            const ffManifestJson = await fs.readFile(firefoxManifestPath, "utf8");
             let mergeManifestJson;
             switch (browser) {
                 case "chrome":
