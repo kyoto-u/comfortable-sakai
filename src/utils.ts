@@ -13,8 +13,13 @@ import { EntryProtocol } from "./features/entity/type";
 
 export type DueCategory = "due24h" | "due5d" | "due14d" | "dueOver14d" | "duePassed";
 
+/**
+ * Fetch entities for miniSakai.
+ * @param settings - Settings for miniSakai.
+ * @param courses - List of Course sites.
+ * @param cacheOnly - A flag to force use cache.
+ */
 export async function getEntities(settings: Settings, courses: Array<Course>, cacheOnly = false) {
-    // TODO: 並列化する
     const hostname = settings.appInfo.hostname;
     const currentTime = settings.appInfo.currentTime;
     const fetchTime = await getFetchTime(hostname);
@@ -36,17 +41,33 @@ export async function getEntities(settings: Settings, courses: Array<Course>, ca
     };
 }
 
+/**
+ * Decoder for timestamp.
+ * @param data - Target value
+ * @returns {number | undefined}
+ */
 const decodeTimestamp = (data: any): number | undefined => {
     if (data === undefined) return undefined;
     return data as number;
 };
 
+/**
+ * Decides whether to use cache or not according to last fetched time.
+ * @param fetchTime - Last fetched timestamp
+ * @param currentTime - Current timestamp
+ * @param cacheInterval - User-configured cache time-interval
+ * @returns {boolean}
+ */
 export const shouldUseCache = (fetchTime: number | undefined, currentTime: number, cacheInterval: number): boolean => {
     if (fetchTime === undefined) return false;
-    // console.log(currentTime, fetchTime);
     return currentTime - fetchTime <= cacheInterval;
 };
 
+/**
+ * Get last fetched time from Storage.
+ * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @returns {Promise<FetchTime>>}
+ */
 export async function getFetchTime(hostname: string): Promise<FetchTime> {
     const assignmentTime = await fromStorage<number | undefined>(hostname, AssignmentFetchTimeStorage, decodeTimestamp);
     const quizTime = await fromStorage<number | undefined>(hostname, QuizFetchTimeStorage, decodeTimestamp);
@@ -57,9 +78,10 @@ export async function getFetchTime(hostname: string): Promise<FetchTime> {
 }
 
 /**
- * Calculate category of assignment due date
- * @param {number} dt1 standard time
- * @param {number} dt2 target time
+ * Calculate category of due date according to days until due.
+ * @param {number} dt1 Current timestamp
+ * @param {number} dt2 Target timestamp
+ * @returns {DueCategory}
  */
 function getDaysUntil(dt1: number, dt2: number): DueCategory {
     let diff = dt2 - dt1;
@@ -80,8 +102,9 @@ function getDaysUntil(dt1: number, dt2: number): DueCategory {
 }
 
 /**
- * Format timestamp for displaying
- * @param {number | undefined} timestamp
+ * Format timestamp for miniSakai.
+ * @param {number | undefined} timestamp - Target timestamp
+ * @returns {string}
  */
 function formatTimestamp(timestamp: number | undefined): string {
     if (timestamp === undefined) return "---";
@@ -97,12 +120,19 @@ function formatTimestamp(timestamp: number | undefined): string {
     );
 }
 
+/**
+ * Get the closest timestamp of given Entries.
+ * @param settings - Settings for miniSakai.
+ * @param entries - Entries of each Entity.
+ */
 export const getClosestTime = (settings: Settings, entries: Array<EntryProtocol>): number => {
     const option = settings.miniSakaiOption;
     const appInfo = settings.appInfo;
     return entries
         .filter((e) => {
+            // Check if user chose to hide completed Entry
             if (!option.showCompletedEntry) {
+                // Skip if the Entry is completed
                 if (e.hasFinished) return false;
             }
             return settings.appInfo.currentTime <= e.getTimestamp(appInfo.currentTime, option.showLateAcceptedEntry);
@@ -113,15 +143,19 @@ export const getClosestTime = (settings: Settings, entries: Array<EntryProtocol>
         );
 };
 
-export const getLoggedInInfoFromScript = (): Array<HTMLScriptElement> => {
+/**
+ * Get script tag.
+ * @returns {Array<HTMLScriptElement>}
+ */
+export const getScripts = (): Array<HTMLScriptElement> => {
     return Array.from(document.getElementsByTagName("script"));
 };
 
 /**
- * Check if user is loggend in to Sakai.
+ * Check if user is logged-in to Sakai LMS.
  */
 function isLoggedIn(): boolean {
-    const scripts = getLoggedInInfoFromScript();
+    const scripts = getScripts();
     let loggedIn = false;
     for (const script of scripts) {
         if (script.text.match("\"loggedIn\": true")) loggedIn = true;
@@ -130,17 +164,26 @@ function isLoggedIn(): boolean {
 }
 
 /**
- * Get courseID of current site.
+ * Get Course site ID of current page.
+ * @param currentHref - Current href.
+ * @returns {string | undefined}
  */
-export const getCourseSiteID = (url: string): string | undefined => {
+export const getCourseSiteID = (currentHref: string): string | undefined => {
     let courseID: string | undefined;
     const reg = new RegExp("(https?://[^/]+)/portal/site/([^/]+)");
-    if (url.match(reg)) {
-        courseID = url.match(reg)?.[2];
+    if (currentHref.match(reg)) {
+        courseID = currentHref.match(reg)?.[2];
     }
     return courseID;
 };
 
+/**
+ * Update a read flag of visited Course site.
+ * Only Assignments have read flags as of now.
+ * @param currentHref - Current href.
+ * @param assignments - List of Assignments
+ * @param hostname -  A key for storage. Usually a hostname of Sakai LMS.
+ */
 export const updateIsReadFlag = (currentHref: string, assignments: Array<Assignment>, hostname: string) => {
     const courseID = getCourseSiteID(currentHref);
     if (courseID === undefined) return;
@@ -153,7 +196,7 @@ export const updateIsReadFlag = (currentHref: string, assignments: Array<Assignm
 };
 
 /**
- * Change loading icon to hamburger button.
+ * Changes miniSakai loading state to ready state.
  */
 function miniSakaiReady(): void {
     const loadingIcon = document.getElementsByClassName("cs-loading")[0];
@@ -164,6 +207,11 @@ function miniSakaiReady(): void {
     loadingIcon.append(hamburgerIcon);
 }
 
+/**
+ * Get remaining time-string for miniSakai.
+ * @param dueInSeconds
+ * @returns {string} - i18n formatted string
+ */
 export function getRemainTimeString(dueInSeconds: number): string {
     if (dueInSeconds === MaxTimestamp) return chrome.i18n.getMessage("due_not_set");
     const seconds = dueInSeconds - CurrentTime;
@@ -174,6 +222,11 @@ export function getRemainTimeString(dueInSeconds: number): string {
     return chrome.i18n.getMessage("remain_time", args);
 }
 
+/**
+ * Create date string for miniSakai.
+ * @param seconds - Target timestamp.
+ * @returns {string}
+ */
 export function createDateString(seconds: number | null | undefined): string {
     if (seconds === MaxTimestamp || seconds === undefined || seconds === null) return "----/--/--";
     const date = new Date(seconds * 1000);
