@@ -51,7 +51,7 @@ export function addMiniSakaiBtn(): void {
 
 /**
  * Insert miniSakai into Sakai LMS.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  */
 export function createMiniSakai(hostname: string) {
     const parent = document.getElementsByClassName("Mrphs-mainHeader")[0];

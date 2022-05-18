@@ -8,7 +8,7 @@ import { QuizFetchTimeStorage, QuizzesStorage } from "../../../constant";
 
 /**
  * Get Quizzes from Sakai REST API.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  * @param courses - List of Course sites.
  * @returns {Promise<Array<Quiz>>}
  */
@@ -28,7 +28,7 @@ const getSakaiQuizzes = async (hostname: string, courses: Array<Course>): Promis
 
 /**
  * Get Quizzes from Storage.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  * @returns {Promise<Array<Quiz>>}
  */
 const getStoredQuizzes = (hostname: string): Promise<Array<Quiz>> => {
@@ -39,7 +39,7 @@ const getStoredQuizzes = (hostname: string): Promise<Array<Quiz>> => {
  * Get Quizzes according to cache flag.
  * If cache flag is true, this returns Quizzes from Storage.
  * Otherwise, returns Quizzes from Sakai REST API.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  * @param courses - List of Course sites.
  * @param useCache - A flag to use cache.
  * @returns {Promise<Array<Quiz>>}

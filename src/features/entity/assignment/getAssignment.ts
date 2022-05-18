@@ -8,7 +8,7 @@ import { AssignmentFetchTimeStorage, AssignmentsStorage } from "../../../constan
 
 /**
  * Get Assignments from Sakai REST API.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  * @param courses - List of Course sites.
  * @returns {Promise<Array<Assignment>>}
  */
@@ -28,7 +28,7 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
 
 /**
  * Get Assignments from Storage.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  * @returns {Promise<Array<Assignment>>}
  */
 const getStoredAssignments = (hostname: string): Promise<Array<Assignment>> => {
@@ -39,7 +39,7 @@ const getStoredAssignments = (hostname: string): Promise<Array<Assignment>> => {
  * Get Assignments according to cache flag.
  * If cache flag is true, this returns Assignments from Storage.
  * Otherwise, returns Assignments from Sakai REST API.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  * @param courses - List of Course sites.
  * @param useCache - A flag to use cache.
  * @returns {Promise<Array<Assignment>>}

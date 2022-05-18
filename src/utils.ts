@@ -65,7 +65,7 @@ export const shouldUseCache = (fetchTime: number | undefined, currentTime: numbe
 
 /**
  * Get last fetched time from Storage.
- * @param hostname - A key for storage. Usually a hostname of Sakai LMS.
+ * @param hostname - A PRIMARY key for storage. Usually a hostname of Sakai LMS.
  * @returns {Promise<FetchTime>>}
  */
 export async function getFetchTime(hostname: string): Promise<FetchTime> {
