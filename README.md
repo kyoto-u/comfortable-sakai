@@ -37,12 +37,15 @@ Download from [Firefox Addons](https://addons.mozilla.org/ja/firefox/addon/comfo
 # Features
 ## Color-coded course site tabs
 Colors course site tabs according to the assignment due date.
-- ![#f03c15](https://via.placeholder.com/15/e85555/000000?text=+)
+- ![RED](https://user-images.githubusercontent.com/41512077/169223701-8f434e9b-554f-42f2-9e53-396f87233d5a.png)
   Due date within 1 Day
-- ![#f03c15](https://via.placeholder.com/15/d7aa57/000000?text=+)
+- ![YELLOW](https://user-images.githubusercontent.com/41512077/169223706-068fb022-7c28-4958-bcd7-9b24d0ad7837.png)
   Due date within 5 Days
-- ![#f03c15](https://via.placeholder.com/15/62b665/000000?text=+)
+- ![GREEN](https://user-images.githubusercontent.com/41512077/169223710-4613fe1f-af15-40ee-9d69-a27ec5c1f0d8.png)
   Due date within 14 Days
+- ![GRAY](https://user-images.githubusercontent.com/41512077/169223714-5dc9f6af-2576-40ae-9c03-c426c4a6221b.png)
+  Due date over 14 Days
+  
 
 ## Notification Badge
 Tells your **unchecked** latest assignments.  
