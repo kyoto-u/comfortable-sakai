@@ -291,7 +291,7 @@ function AddMemoBox(props: { shown: boolean; courses: Course[]; onMemoAdd: (memo
     );
 }
 
-function MiniSakaiEntryList(props: {
+export function MiniSakaiEntryList(props: {
     dueType: DueType;
     entriesWithCourse: {
         entry: EntryUnion;
