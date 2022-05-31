@@ -10,6 +10,7 @@ import { fromStorage } from "./features/storage";
 import { AssignmentFetchTimeStorage, CurrentTime, MaxTimestamp, QuizFetchTimeStorage } from "./constant";
 import { saveAssignments } from "./features/entity/assignment/saveAssignment";
 import { EntryProtocol } from "./features/entity/type";
+import {i18nMessage} from "./features/chrome";
 
 export type DueCategory = "due24h" | "due5d" | "due14d" | "dueOver14d" | "duePassed";
 
@@ -219,7 +220,7 @@ export function getRemainTimeString(dueInSeconds: number): string {
     const hours = Math.floor((seconds - day * 3600 * 24) / 3600);
     const minutes = Math.floor((seconds - (day * 3600 * 24 + hours * 3600)) / 60);
     const args = [day.toString(), hours.toString(), minutes.toString()];
-    return chrome.i18n.getMessage("remain_time", args);
+    return i18nMessage("remain_time", args);
 }
 
 /**
