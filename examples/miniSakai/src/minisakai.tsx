@@ -1,6 +1,6 @@
 import React from "react";
 import { EntryUnion, MiniSakaiEntryList } from "../../../src/components/entryTab";
-import { Settings } from "../../../src/features/setting/types";
+import { Settings } from "comfortable-sakai-component/src/features/setting/types";
 import { Course } from "../../../src/features/course/types";
 import { AssignmentEntry } from "../../../src/features/entity/assignment/types";
 import "./comfortable-sakai.css";
@@ -10,7 +10,7 @@ type EntryWithCourse = {
     course: Course;
 };
 
-export const Example = () => {
+export default function App() {
     const settings = new Settings();
     const elements: Array<EntryWithCourse> = [
         {
