@@ -3,7 +3,7 @@ let _version = "---";
 if (MODE === "production") {
     _version = chrome.runtime.getManifest().version;
 }
-export const VERSION = _version;
+export const VERSION = "---";
 export const CurrentTime = new Date().getTime() / 1000;
 export const AssignmentsStorage = "Assignments";
 export const QuizzesStorage = "Quizzes";
