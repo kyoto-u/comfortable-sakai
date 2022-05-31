@@ -1,8 +1,8 @@
+export const MODE = process.env.NODE_ENV;
 let _version = "---";
-if (typeof chrome.runtime !== "undefined") {
+if (MODE === "production") {
     _version = chrome.runtime.getManifest().version;
 }
-export const MODE = process.env.NODE_ENV;
 export const VERSION = _version;
 export const CurrentTime = new Date().getTime() / 1000;
 export const AssignmentsStorage = "Assignments";
