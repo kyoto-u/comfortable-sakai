@@ -3,12 +3,12 @@ import { EntryUnion, MiniSakaiEntryList } from "../../../src/components/entryTab
 import { Settings } from "../../../src/features/setting/types";
 import { Course } from "../../../src/features/course/types";
 import { AssignmentEntry } from "../../../src/features/entity/assignment/types";
+import "./comfortable-sakai.css";
 
 type EntryWithCourse = {
     entry: EntryUnion;
     course: Course;
 };
-import "./comfortable-sakai.css";
 
 export const Example = () => {
     const settings = new Settings();
