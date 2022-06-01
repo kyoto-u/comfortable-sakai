@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-import App from "./miniSakai/src/minisakai";
+import App from "./src/minisakai";
 
 const rootElement = document.getElementById("root");
 render(<App />, rootElement);
