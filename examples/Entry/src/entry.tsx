@@ -22,11 +22,11 @@ export default function App() {
     const elements: Array<EntryWithCourse> = [
         {
             course: new Course("1", "Assignment Entity", ""),
-            entry: new AssignmentEntry("1", "1st Assignment Entry", timestamp, timestamp, false)
+            entry: new AssignmentEntry("1", "1st Assignment Entry", timestamp, timestamp, true)
         },
         {
             course: new Course("1", "Assignment Entity", ""),
-            entry: new AssignmentEntry("2", "2nd Assignment Entry", timestamp + 10000, timestamp + 10000, false)
+            entry: new AssignmentEntry("2", "2nd Assignment Entry", timestamp + 10000, timestamp + 10000, true)
         }
     ];
     return (
