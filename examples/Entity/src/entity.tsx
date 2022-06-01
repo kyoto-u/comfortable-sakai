@@ -5,6 +5,7 @@ import { EntryUnion, MiniSakaiEntryList } from "@das08/comfortable-sakai-compone
 import { Settings } from "@das08/comfortable-sakai-component/src/features/setting/types";
 import { Course } from "@das08/comfortable-sakai-component/src/features/course/types";
 import { AssignmentEntry } from "@das08/comfortable-sakai-component/src/features/entity/assignment/types";
+import { QuizEntry } from "@das08/comfortable-sakai-component/src/features/entity/quiz/types";
 
 import "./comfortable-sakai.css";
 
@@ -14,16 +15,23 @@ type EntryWithCourse = {
 };
 
 export default function App() {
+    const time = new Date();
+    time.setDate(time.getDate() + 12);
+    const timestamp = time.getTime() / 1000;
     const settings = new Settings();
     const elements: Array<EntryWithCourse> = [
         {
-            course: new Course("123456", "Sample", ""),
-            entry: new AssignmentEntry("12", "test", 1654044495, 1654044495, false)
+            course: new Course("1", "Assignment Entity", ""),
+            entry: new AssignmentEntry("12", "This is Assignment Entry", timestamp, timestamp, false)
+        },
+        {
+            course: new Course("2", "Quiz Entity", ""),
+            entry: new QuizEntry("12", "This is Quiz Entry", timestamp, false)
         }
     ];
     return (
         <MiniSakaiEntryList
-            dueType="danger"
+            dueType="success"
             isSubset={false}
             settings={settings}
             entriesWithCourse={elements}
