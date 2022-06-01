@@ -1,4 +1,6 @@
 import React from "react";
+import { createRoot } from 'react-dom/client';
+
 import { EntryUnion, MiniSakaiEntryList } from "@das08/comfortable-sakai-component/src/components/entryTab";
 import { Settings } from "@das08/comfortable-sakai-component/src/features/setting/types";
 import { Course } from "@das08/comfortable-sakai-component/src/features/course/types";
@@ -33,4 +35,8 @@ export default function App() {
             }}
         />
     );
-}
+};
+
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement!);
+root.render(<App />);

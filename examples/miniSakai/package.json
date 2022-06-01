@@ -3,7 +3,7 @@
   "description": "CS",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "index.tsx",
+  "main": "src/minisakai.tsx",
   "dependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
