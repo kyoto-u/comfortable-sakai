@@ -16,22 +16,22 @@ type EntryWithCourse = {
 
 export default function App() {
     const time = new Date();
-    time.setDate(time.getDate() + 12);
+    time.setDate(time.getDate() + 4);
     const timestamp = time.getTime() / 1000;
     const settings = new Settings();
     const elements: Array<EntryWithCourse> = [
         {
             course: new Course("1", "Assignment Entity", ""),
-            entry: new AssignmentEntry("1", "This is an Entry of Assignment Entity", timestamp, timestamp, false)
+            entry: new AssignmentEntry("1", "1st Assignment Entry", timestamp, timestamp, false)
         },
         {
-            course: new Course("2", "Quiz Entity", ""),
-            entry: new QuizEntry("2", "This is an Entry of Quiz Entity", timestamp, false)
+            course: new Course("1", "Assignment Entity", ""),
+            entry: new AssignmentEntry("2", "2nd Assignment Entry", timestamp + 10000, timestamp + 10000, false)
         }
     ];
     return (
         <MiniSakaiEntryList
-            dueType="success"
+            dueType="warning"
             isSubset={false}
             settings={settings}
             entriesWithCourse={elements}
