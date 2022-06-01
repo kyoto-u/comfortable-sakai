@@ -19,7 +19,7 @@ export default function App() {
     const settings = new Settings();
     const elements: Array<EntryWithCourse> = [
         {
-            course: new Course("12345", "Sample", ""),
+            course: new Course("123456", "Sample", ""),
             entry: new AssignmentEntry("12", "test", 1654044495, 1654044495, false)
         }
     ];
