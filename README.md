@@ -12,7 +12,7 @@ Originated from [Comfortable PandA](https://github.com/comfortable-panda/Comfort
 - Sakai 12(Unverified)
 
 # How to install Comfortable Sakai
-## Google Chrome
+## Google Chrome & Edge
 Download from [Chrome Web Store](https://chrome.google.com/webstore/detail/comfortable-sakai/dljchadmceknaijmdmnaaodjkkidhakh)
 <!--
 1. Download latest version of `Comfortable-Sakai.zip` from [HERE](https://github.com/kyoto-u/comfortable-sakai/releases).
@@ -33,6 +33,13 @@ Download from [Firefox Addons](https://addons.mozilla.org/ja/firefox/addon/comfo
 6. Select the zip file you downloaded and install.
 7. You are now ready to use :) Log in to your Sakai LMS website!
 -->
+
+## Safari 
+Download from [App Store](https://apps.apple.com/jp/app/comfortable-panda/id1572408187?mt=12)
+
+# Documents
+Documentation for developers is available at GitHub pages.  
+[Comfortable Sakai Document](https://das08.github.io/comfortable-sakai-document/)
 
 # Features
 ## Color-coded course site tabs
