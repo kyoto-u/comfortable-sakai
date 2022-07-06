@@ -17,7 +17,6 @@ jest.mock("../constant", () => ({
         return 99999999999999;
     }
 }));
-
 describe("getFetchTime(showCompleted)", () => {
     test("All greater than or equal to currentTime", () => {
         const settings = new Settings();
@@ -97,6 +96,22 @@ describe("getFetchTime(showCompleted)", () => {
         ];
         const output = getClosestTime(settings, input);
         expect(output).toBe(MaxTimestamp);
+    });
+
+    test("All older than currentTime(showLate)", () => {
+        const settings = new Settings();
+        settings.miniSakaiOption = {
+            showCompletedEntry: true,
+            showLateAcceptedEntry: true
+        };
+        settings.appInfo.currentTime = 500;
+        const input: Array<EntryProtocol> = [
+            mockAssignmentEntry("id1", 300, 600, false),
+            mockAssignmentEntry("id2", 200, 600, false),
+            mockAssignmentEntry("id3", 50, 600, false)
+        ];
+        const output = getClosestTime(settings, input);
+        expect(output).toBe(600);
     });
 
     test("All older than currentTime(show Late)", () => {
